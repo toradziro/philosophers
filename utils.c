@@ -13,9 +13,6 @@ void	free_philos(t_philo *philos, int32_t num, pthread_mutex_t *forks)
 		pthread_mutex_destroy(&forks[i]);
 		++i;
 	}
-	free(philos->philo);
-	free(forks);
-	free(philos);
 	exit (0);
 }
 
