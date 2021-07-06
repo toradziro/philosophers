@@ -16,7 +16,6 @@ void	free_philos(t_philo *philos, int32_t num, pthread_mutex_t *forks)
 	free(philos->philo);
 	free(forks);
 	free(philos);
-//	while (1) {}
 	exit (0);
 }
 
