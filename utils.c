@@ -2,7 +2,7 @@
 
 void	free_philos(t_philo *philos, int32_t num, pthread_mutex_t *forks)
 {
-	int32_t	i;
+	int32_t		i;
 	pthread_t	thread;
 
 	i = 0;
@@ -13,6 +13,10 @@ void	free_philos(t_philo *philos, int32_t num, pthread_mutex_t *forks)
 		pthread_mutex_destroy(&forks[i]);
 		++i;
 	}
+	free(philos->philo);
+	free(forks);
+	free(philos);
+//	while (1) {}
 	exit (0);
 }
 
@@ -37,8 +41,8 @@ void	check_values(char **argv, int32_t num)
 
 int64_t	my_time(void)
 {
-	struct timeval tv;
-	int64_t	t;
+	struct timeval	tv;
+	int64_t			t;
 
 	gettimeofday(&tv, NULL);
 	t = tv.tv_sec * 1000 + tv.tv_usec / 1000;
@@ -57,6 +61,13 @@ void	error_handle(int32_t err_id)
 		write(STDERR_FILENO, "Error: Invalid amount of arguments\n", 35);
 	else if (err_id == WRONG_ARG_VALUE)
 		write(STDERR_FILENO, "Error: One of argv have non-integer value, "
-					   "check it\n", 52);
+			"check it\n", 52);
 	exit(err_id);
+}
+
+void	report_death(t_table *t, int32_t i)
+{
+	printf("%lld %d died\n", my_time() - t->ph[i].start_time,
+		   t->ph[i].philo_id);
+	free_philos(t->ph, t->info->num, t->forks);
 }

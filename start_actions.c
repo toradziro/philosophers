@@ -2,31 +2,27 @@
 
 void	check_alive(void *info)
 {
-	t_table	*table;
-	int32_t i;
+	t_table	*t;
+	int32_t	i;
 
-	table = (t_table*)info;
+	t = (t_table *)info;
 	while (1)
 	{
 		i = 0;
-		while (i < table->info->num)
+		while (i < t->info->num)
 		{
-			if (my_time() - table->philos[i].eat_last_time >
-				table->philos[i].time_die)
+			if (my_time() - t->ph[i].eat_last_time > t->ph[i].time_die)
+				report_death(t, i);
+			if (t->ph[i].is_finished == 1)
 			{
-				printf("%lld %d died\n", my_time() - table->philos[i].start_time,
-		   				table->philos[i].philo_id);
-				free_philos(table->philos, table->info->num, table->forks);
-			}
-			if (table->philos[i].is_finished == 1)
-			{
-				table->philos[i].is_finished = 0;
-				++table->total_count;
-				if (table->total_count >= table->info->num)
-					free_philos(table->philos, table->info->num, table->forks);
+				t->ph[i].is_finished = 0;
+				++t->total_count;
+				if (t->total_count >= t->info->num)
+					free_philos(t->ph, t->info->num, t->forks);
 			}
 			++i;
 		}
+		usleep(1);
 	}
 }
 
@@ -36,19 +32,19 @@ void	take_forks(t_philo *philo)
 	{
 		pthread_mutex_lock(philo->r_fork);
 		printf("%lld %d has taken a fork\n", my_time() - philo->start_time,
-		 		philo->philo_id);
+			philo->philo_id);
 		pthread_mutex_lock(philo->l_fork);
 		printf("%lld %d has taken a fork\n", my_time() - philo->start_time,
-		 		philo->philo_id);
+			philo->philo_id);
 	}
 	else
 	{
 		pthread_mutex_lock(philo->l_fork);
 		printf("%lld %d has taken a fork\n", my_time() - philo->start_time,
-			   philo->philo_id);
+			philo->philo_id);
 		pthread_mutex_lock(philo->r_fork);
 		printf("%lld %d has taken a fork\n", my_time() - philo->start_time,
-			   philo->philo_id);
+			philo->philo_id);
 	}
 }
 
@@ -57,12 +53,12 @@ void	p_eat(t_philo *philo)
 	int64_t	time_start;
 
 	time_start = my_time();
+	philo->eat_last_time = my_time();
 	printf("%lld %d is eating\n", time_start - philo->start_time,
 		   philo->philo_id);
 	while (my_time() - time_start < philo->time_eat)
 	{
 	}
-	philo->eat_last_time = my_time();
 }
 
 void	p_sleep(t_philo *philo)
@@ -81,7 +77,7 @@ void	start_actions(void *philo)
 {
 	t_philo	*curr_philo;
 
-	curr_philo = (t_philo*)philo;
+	curr_philo = (t_philo *)philo;
 	while (1)
 	{
 		if (my_time() - curr_philo->eat_last_time > curr_philo->time_die)
