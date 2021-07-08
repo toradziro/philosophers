@@ -5,7 +5,6 @@ void	start_threads(t_philo *philos, t_info *info, pthread_mutex_t *forks)
 	t_table		*table;
 	int32_t		i;
 	uint64_t	time;
-	pthread_t	monitor;
 
 	i = 0;
 	table = (t_table *)calloc(1, sizeof(t_table));
@@ -20,9 +19,9 @@ void	start_threads(t_philo *philos, t_info *info, pthread_mutex_t *forks)
 		pthread_create(philos[i].philo, NULL, (void *)start_actions,
 			(void *)(&philos[i]));
 		++i;
+		usleep(1);
 	}
 	usleep(100);
-	pthread_create(&monitor, NULL, (void *)check_alive, (void *)table);
 	check_alive(table);
 }
 

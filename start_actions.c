@@ -53,12 +53,12 @@ void	p_eat(t_philo *philo)
 	int64_t	time_start;
 
 	time_start = my_time();
-	philo->eat_last_time = my_time();
 	printf("%lld %d is eating\n", time_start - philo->start_time,
 		   philo->philo_id);
 	while (my_time() - time_start < philo->time_eat)
 	{
 	}
+	philo->eat_last_time = my_time();
 }
 
 void	p_sleep(t_philo *philo)
