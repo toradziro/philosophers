@@ -33,4 +33,4 @@ fclean:	clean
 re:		fclean all
 
 -include $(SRC_D)
-#.SILENT:
+.SILENT:

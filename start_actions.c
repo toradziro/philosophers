@@ -55,9 +55,7 @@ void	p_eat(t_philo *philo)
 	time_start = my_time();
 	printf("%lld %d is eating\n", time_start - philo->start_time,
 		   philo->philo_id);
-	while (my_time() - time_start < philo->time_eat)
-	{
-	}
+	usleep(philo->time_eat * 1000);
 	philo->eat_last_time = my_time();
 }
 
@@ -68,9 +66,7 @@ void	p_sleep(t_philo *philo)
 	time_start = my_time();
 	printf("%lld %d is sleeping\n", time_start - philo->start_time,
 		   philo->philo_id);
-	while (my_time() - time_start < philo->time_sleep)
-	{
-	}
+	usleep(philo->time_sleep * 1000);
 }
 
 void	start_actions(void *philo)

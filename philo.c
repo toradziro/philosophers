@@ -69,7 +69,7 @@ t_philo	*init_philos(int32_t nums, pthread_mutex_t *forks, t_info *info)
 		philos[i].time_sleep = info->time_sleep;
 		philos[i].time_eat = info->time_eat;
 		philos[i].times = info->times;
-		philos[i].philo_id = i;
+		philos[i].philo_id = i + 1;
 		philos[i].is_finished = 0;
 		philos[i].philo = (pthread_t *)calloc(1, sizeof(pthread_t));
 		philos[i].r_fork = &forks[i - 1];
